@@ -11,6 +11,8 @@ export interface ILinkDefaultProps {
   onLinkClick: IOnLinkClick
   isHovered: boolean
   isSelected: boolean
+  linkColor: string
+  dotsColor: string
 }
 
 export const LinkDefault = ({
@@ -23,6 +25,8 @@ export const LinkDefault = ({
   onLinkClick,
   isHovered,
   isSelected,
+  linkColor,
+  dotsColor
 }: ILinkDefaultProps) => {
   const points = generateCurvePath(startPos, endPos)
 
@@ -32,12 +36,12 @@ export const LinkDefault = ({
         r="4"
         cx={startPos.x}
         cy={startPos.y}
-        fill="cornflowerblue"
+        fill={dotsColor}
       />
       {/* Main line */}
       <path
         d={points}
-        stroke="cornflowerblue"
+        stroke={linkColor}
         strokeWidth="3"
         fill="none"
       />
