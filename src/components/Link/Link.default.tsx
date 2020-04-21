@@ -41,12 +41,10 @@ export const LinkDefault = ({
         r="4"
         cx={startPos.x}
         cy={startPos.y}
-        fill={dotsColor}
       />
       {/* Main line */}
       <path
         d={points}
-        stroke={linkColor}
         strokeWidth="3"
         fill="none"
       />
