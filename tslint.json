@@ -2,20 +2,17 @@
   "extends": [
     "tslint:latest",
     "tslint-config-standard",
-    "tslint-react",
-    "tslint-plugin-prettier",
-    "tslint-config-prettier"
+    "tslint-react"
   ],
   "rules": {
     "semicolon": [true, "never"],
     "object-literal-sort-keys": false,
-    "trailing-comma": [true, { "multiline": "always", "singleline": "never" }],
+    "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
     "jsx-no-lambda": false,
     "jsx-no-multiline-js": false,
     "quotemark": [true, "single", "jsx-double"],
     "no-implicit-dependencies": [true, "dev"],
     "no-console": [false],
-    "max-line-length": [true, 200],
-    "prettier": true
+    "max-line-length": [true, 200]
   }
 }
