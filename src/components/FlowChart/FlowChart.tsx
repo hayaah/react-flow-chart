@@ -1,46 +1,10 @@
 import * as React from 'react'
 import {
-  CanvasInnerDefault,
-  CanvasOuterDefault,
-  CanvasWrapper,
-  ICanvasInnerDefaultProps,
-  ICanvasOuterDefaultProps,
-  IChart,
-  IConfig,
-  ILink,
-  ILinkDefaultProps,
-  INodeDefaultProps,
-  INodeInnerDefaultProps,
-  IOnCanvasClick,
-  IOnCanvasDrop,
-  IOnDeleteKey,
-  IOnDragCanvas,
-  IOnDragCanvasStop,
-  IOnDragNode,
-  IOnDragNodeStop,
-  IOnLinkCancel,
-  IOnLinkClick,
-  IOnLinkComplete,
-  IOnLinkMouseEnter,
-  IOnLinkMouseLeave,
-  IOnLinkMove,
-  IOnLinkStart,
-  IOnNodeClick,
-  IOnNodeMouseEnter,
-  IOnNodeMouseLeave,
-  IOnNodeSizeChange,
-  IOnPortPositionChange,
-  IOnZoomCanvas,
-  IPortDefaultProps,
-  IPortsDefaultProps,
-  ISelectedOrHovered,
-  LinkDefault,
-  LinkWrapper,
-  NodeDefault,
-  NodeInnerDefault,
-  NodeWrapper,
-  PortDefault,
-  PortsDefault,
+  CanvasInnerDefault, CanvasOuterDefault, CanvasWrapper, ICanvasInnerDefaultProps, ICanvasOuterDefaultProps, IChart, IConfig, ILink,
+  ILinkDefaultProps, INodeDefaultProps, INodeInnerDefaultProps, IOnCanvasClick, IOnCanvasDrop, IOnDeleteKey, IOnDragCanvas,
+  IOnDragCanvasStop, IOnDragNode, IOnDragNodeStop, IOnLinkCancel, IOnLinkClick, IOnLinkComplete, IOnLinkMouseEnter,
+  IOnLinkMouseLeave, IOnLinkMove, IOnLinkStart, IOnNodeClick, IOnNodeMouseEnter, IOnNodeMouseLeave, IOnNodeSizeChange,
+  IOnPortPositionChange, IPortDefaultProps, IPortsDefaultProps, ISelectedOrHovered, LinkDefault, LinkWrapper, NodeDefault, NodeInnerDefault, NodeWrapper, PortDefault, PortsDefault,
 } from '../../'
 import { getMatrix } from './utils/grid'
 
@@ -64,7 +28,6 @@ export interface IFlowChartCallbacks {
   onNodeMouseEnter: IOnNodeMouseEnter
   onNodeMouseLeave: IOnNodeMouseLeave
   onNodeSizeChange: IOnNodeSizeChange
-  onZoomCanvas: IOnZoomCanvas
 }
 
 export interface IFlowChartComponents {
@@ -99,10 +62,7 @@ export interface IFlowChartProps {
 }
 
 export const FlowChart = (props: IFlowChartProps) => {
-  const [canvasSize, setCanvasSize] = React.useState<{
-    width: number
-    height: number
-  }>({ width: 0, height: 0 })
+  const [ canvasSize, setCanvasSize ] = React.useState<{ width: number, height: number }>({ width: 0, height: 0 })
 
   const {
     chart,
@@ -126,7 +86,6 @@ export const FlowChart = (props: IFlowChartProps) => {
       onNodeMouseEnter,
       onNodeMouseLeave,
       onNodeSizeChange,
-      onZoomCanvas,
     },
     Components: {
       CanvasOuter = CanvasOuterDefault,
@@ -141,30 +100,10 @@ export const FlowChart = (props: IFlowChartProps) => {
   } = props
   const { links, nodes, selected, hovered, offset } = chart
 
-  const canvasCallbacks = {
-    onDragCanvas,
-    onDragCanvasStop,
-    onCanvasClick,
-    onDeleteKey,
-    onCanvasDrop,
-    onZoomCanvas,
-  }
+  const canvasCallbacks = { onDragCanvas, onDragCanvasStop, onCanvasClick, onDeleteKey, onCanvasDrop }
   const linkCallbacks = { onLinkMouseEnter, onLinkMouseLeave, onLinkClick }
-  const nodeCallbacks = {
-    onDragNode,
-    onNodeClick,
-    onDragNodeStop,
-    onNodeMouseEnter,
-    onNodeMouseLeave,
-    onNodeSizeChange,
-  }
-  const portCallbacks = {
-    onPortPositionChange,
-    onLinkStart,
-    onLinkMove,
-    onLinkComplete,
-    onLinkCancel,
-  }
+  const nodeCallbacks = { onDragNode, onNodeClick, onDragNodeStop, onNodeMouseEnter, onNodeMouseLeave, onNodeSizeChange }
+  const portCallbacks = { onPortPositionChange, onLinkStart, onLinkMove, onLinkComplete, onLinkCancel }
 
   const nodesInView = Object.keys(nodes).filter((nodeId) => {
     // TODO: define this in chart?
@@ -173,20 +112,11 @@ export const FlowChart = (props: IFlowChartProps) => {
     const { x, y } = nodes[nodeId].position
     const size = nodes[nodeId].size || defaultNodeSize
 
-    return (
-      x + offset.x + size.width > 0 &&
-      x + offset.x < canvasSize.width &&
-      y + offset.y + size.height > 0 &&
-      y + offset.y < canvasSize.height
-    )
+    return x + offset.x + size.width > 0 && x + offset.x < canvasSize.width &&
+      y + offset.y + size.height > 0 && y + offset.y < canvasSize.height
   })
 
-  const matrix = config.smartRouting
-    ? getMatrix(
-        chart.offset,
-        Object.values(nodesInView.map((nodeId) => nodes[nodeId]))
-      )
-    : undefined
+  const matrix = config.smartRouting ? getMatrix(chart.offset, Object.values(nodesInView.map((nodeId) => nodes[nodeId]))) : undefined
 
   const linksInView = Object.keys(links).filter((linkId) => {
     const from = links[linkId].from
@@ -203,17 +133,14 @@ export const FlowChart = (props: IFlowChartProps) => {
     <CanvasWrapper
       config={config}
       position={chart.offset}
-      zoom={chart.zoom}
       ComponentInner={CanvasInner}
       ComponentOuter={CanvasOuter}
       onSizeChange={(width, height) => setCanvasSize({ width, height })}
       {...canvasCallbacks}
     >
-      {linksInView.map((linkId) => {
-        const isSelected =
-          !config.readonly && selected.type === 'link' && selected.id === linkId
-        const isHovered =
-          !config.readonly && hovered.type === 'link' && hovered.id === linkId
+      { linksInView.map((linkId) => {
+        const isSelected = !config.readonly && selected.type === 'link' && selected.id === linkId
+        const isHovered = !config.readonly && hovered.type === 'link' && hovered.id === linkId
         const fromNodeId = links[linkId].from.nodeId
         const toNodeId = links[linkId].to.nodeId
 
@@ -232,7 +159,7 @@ export const FlowChart = (props: IFlowChartProps) => {
           />
         )
       })}
-      {nodesInView.map((nodeId) => {
+      { nodesInView.map((nodeId) => {
         const isSelected = selected.type === 'node' && selected.id === nodeId
         const selectedLink = getSelectedLinkForNode(selected, nodeId, links)
         const hoveredLink = getSelectedLinkForNode(hovered, nodeId, links)
@@ -256,7 +183,8 @@ export const FlowChart = (props: IFlowChartProps) => {
             {...portCallbacks}
           />
         )
-      })}
+      })
+    }
     </CanvasWrapper>
   )
 }
@@ -264,10 +192,9 @@ export const FlowChart = (props: IFlowChartProps) => {
 const getSelectedLinkForNode = (
   selected: ISelectedOrHovered,
   nodeId: string,
-  links: IChart['links']
+  links: IChart['links'],
 ): ILink | undefined => {
-  const link =
-    selected.type === 'link' && selected.id ? links[selected.id] : undefined
+  const link = selected.type === 'link' && selected.id ? links[selected.id] : undefined
 
   if (link && (link.from.nodeId === nodeId || link.to.nodeId === nodeId)) {
     return link
