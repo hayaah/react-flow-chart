@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
+import Draggable from 'react-draggable'
 import {
   IConfig,
   IOnCanvasClick,
@@ -77,33 +77,29 @@ export class CanvasWrapper extends React.Component<
     window.removeEventListener('scroll', this.updateSize)
   }
 
+  public onDragCanvas(props: { config: any; event: any; data: any }) {
+    const { config, event, data } = props;
+    this.props.onDragCanvas({ config, event, data })
+  }
+
+  public onDragCanvasStop(props: { config: any; event: any; data: any }) {
+    const { config, event, data } = props;
+    this.props.onDragCanvas({ config, event, data })
+  }
+
   public render() {
     const {
       config,
       ComponentInner,
       ComponentOuter,
       position,
-      onDragCanvas,
-      onDragCanvasStop,
       children,
       onCanvasClick,
       onDeleteKey,
       onCanvasDrop,
       zoom,
-      onZoomCanvas,
     } = this.props
     const { offsetX, offsetY } = this.state
-
-    const options = {
-      transformEnabled: zoom.transformEnabled || true,
-      minScale: zoom.minScale || 0.25,
-      maxScale: zoom.maxScale || 2,
-      limitToBounds: false,
-      limitToWrapper: false,
-      centerContent: false,
-    }
-
-    let doubleClickMode = config.readonly ? 'zoomOut' : 'zoomIn'
 
     return (
       <CanvasContext.Provider
@@ -114,25 +110,25 @@ export class CanvasWrapper extends React.Component<
         }}
       >
         <ComponentOuter config={config} ref={this.ref}>
-          <TransformWrapper
-            defaultPositionX={position.x}
-            defaultPositionY={position.y}
-            positionX={position.x}
-            positionY={position.y}
-            scale={zoom.scale}
-            options={options}
-            zoomIn={zoom.zoomIn || { step: 300 }}
-            zoomOut={zoom.zoomOut || { step: 300 }}
-            pan={zoom.pan || { disabled: false }}
-            wheel={zoom.wheel || { disabled: false, step: 75 }}
-            doubleClick={{ disabled: true, step: 10, mode: doubleClickMode }}
-            pinch={{ disabled: false }}
-            onWheel={(data: any) => onZoomCanvas({ config, data })}
-            onWheelStop={(data: any) => onZoomCanvas({ config, data })}
-            onPanning={(data: any) => onDragCanvas({ config, data })}
-            onPanningStop={(data: any) => onDragCanvasStop({ config, data })}
+
+          <div
+            style={{
+              width: `${zoom.width}%`,
+              height: `${zoom.height}%`,
+              transform: `scale(${zoom.scale})`,
+              transformOrigin: `left top`
+            }}
           >
-            <TransformComponent>
+            {/* <div> */}
+
+            <Draggable
+              axis="both"
+              position={position}
+              grid={[1, 1]}
+              onDrag={(event, data) => this.onDragCanvas({ config, event, data })}
+              onStop={(event, data) => this.onDragCanvasStop({ config, event, data })}
+              disabled={config.readonly}
+            >
               <ComponentInner
                 config={config}
                 children={children}
@@ -160,10 +156,11 @@ export class CanvasWrapper extends React.Component<
                 }}
                 onDragOver={(e) => e.preventDefault()}
               />
-            </TransformComponent>
-          </TransformWrapper>
+
+            </Draggable>
+          </div>
         </ComponentOuter>
-      </CanvasContext.Provider>
+      </CanvasContext.Provider >
     )
   }
 

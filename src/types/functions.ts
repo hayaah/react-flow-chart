@@ -20,6 +20,7 @@ export type IOnDragNode = (input: IOnDragNodeInput) => void
 export interface IOnDragCanvasInput {
   config?: IConfig
   data: any
+  event: any
 }
 
 export type IOnDragCanvas = (input: IOnDragCanvasInput) => void

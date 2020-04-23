@@ -18,6 +18,8 @@ const getChart = (rows: number, cols: number) => {
     },
     zoom: {
       scale: 1,
+      width: 150,
+      height: 150,
     },
     nodes: keyBy(
       xyGrid.map(({ x, y }) => ({

@@ -59,6 +59,8 @@ export interface ILink {
 }
 
 export interface IZoom {
+  width: number
+  height: number
   scale: number
   transformEnabled?: boolean
   minScale?: number

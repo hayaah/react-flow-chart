@@ -50,9 +50,18 @@ export class Zoom extends React.Component {
 
           <Button
             onClick={() => {
-              this.setState({
-                zoom: { scale: this.state.zoom.scale + 0.1 },
-              })
+              const zoom = this.state.zoom;
+              const { width, height, scale } = zoom;
+              const newTransform = scale * 0.15;
+              if (width > 8) {
+                this.setState({
+                  zoom: {
+                    scale: scale + newTransform,
+                    width: width - width * 0.1,
+                    height: height - height * 0.1,
+                  },
+                })
+              }
             }}
           >
             +
@@ -60,9 +69,18 @@ export class Zoom extends React.Component {
 
           <Button
             onClick={() => {
-              this.setState({
-                zoom: { scale: this.state.zoom.scale - 0.1 },
-              })
+              const zoom = this.state.zoom;
+              const { width, height, scale } = zoom;
+              const newTransform = scale * 0.15;
+              if (scale > 0.13) {
+                this.setState({
+                  zoom: {
+                    width: width + width * 0.2,
+                    height: height + height * 0.2,
+                    scale: scale - newTransform,
+                  }
+                });
+              }
             }}
           >
             -

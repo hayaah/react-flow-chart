@@ -6,7 +6,9 @@ export const chartSimple: IChart = {
     y: 0,
   },
   zoom: {
-    scale: 1,
+    width: 150,
+    height: 150,
+    scale: 0.68,
     transformEnabled: true,
     minScale: 0.25,
     maxScale: 2,

@@ -65,21 +65,14 @@ export const onDragNode: IStateCallback<IOnDragNode> = ({
 
 export const onDragNodeStop: IStateCallback<IOnDragNodeStop> = () => identity
 
-export const onDragCanvas: IOnDragCanvas = ({ config, data }) => (
-  chart: IChart
-): IChart => {
-  chart.offset = getOffset(config, { x: data.positionX, y: data.positionY })
+export const onDragCanvas: IStateCallback<IOnDragCanvas> = ({ config, event, data }) => (chart: IChart): IChart => {
+  chart.offset = config && config.snapToGrid ? { x: Math.round(data.x / 20) * 20, y: Math.round(data.y / 20) * 20 } : { x: data.x, y: data.y }
   return chart
 }
 
-export const onDragCanvasStop: IStateCallback<IOnDragCanvasStop> = () =>
-  identity
+export const onDragCanvasStop: IStateCallback<IOnDragCanvasStop> = () => identity
 
-export const onLinkStart: IStateCallback<IOnLinkStart> = ({
-  linkId,
-  fromNodeId,
-  fromPortId,
-}) => (chart: IChart): IChart => {
+export const onLinkStart: IStateCallback<IOnLinkStart> = ({ linkId, fromNodeId, fromPortId }) => (chart: IChart): IChart => {
   chart.links[linkId] = {
     id: linkId,
     from: {
@@ -90,6 +83,32 @@ export const onLinkStart: IStateCallback<IOnLinkStart> = ({
   }
   return chart
 }
+
+// export const onDragCanvas: IOnDragCanvas = ({ config, data }) => (
+//   chart: IChart
+// ): IChart => {
+//   chart.offset = getOffset(config, { x: data.positionX, y: data.positionY })
+//   return chart
+// }
+
+// export const onDragCanvasStop: IStateCallback<IOnDragCanvasStop> = () =>
+//   identity
+
+// export const onLinkStart: IStateCallback<IOnLinkStart> = ({
+//   linkId,
+//   fromNodeId,
+//   fromPortId,
+// }) => (chart: IChart): IChart => {
+//   chart.links[linkId] = {
+//     id: linkId,
+//     from: {
+//       nodeId: fromNodeId,
+//       portId: fromPortId,
+//     },
+//     to: {},
+//   }
+//   return chart
+// }
 
 export const onLinkMove: IStateCallback<IOnLinkMove> = ({
   linkId,
