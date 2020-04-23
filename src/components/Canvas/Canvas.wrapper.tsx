@@ -44,7 +44,7 @@ interface IState {
 export class CanvasWrapper extends React.Component<
   ICanvasWrapperProps,
   IState
-> {
+  > {
   public state = {
     width: 0,
     height: 0,
@@ -109,16 +109,25 @@ export class CanvasWrapper extends React.Component<
           zoomScale: zoom.scale,
         }}
       >
-        <ComponentOuter config={config} ref={this.ref}>
+        <ComponentOuter
+          config={config}
+          ref={this.ref}
+          style={{
+            width: `${zoom.width}%`,
+            height: `${zoom.height}%`,
+            transform: `scale(${zoom.scale})`,
+            transformOrigin: `left top`
+          }}
+        >
 
-          <div
+          {/* <div
             style={{
               width: `${zoom.width}%`,
               height: `${zoom.height}%`,
               transform: `scale(${zoom.scale})`,
               transformOrigin: `left top`
             }}
-          >
+          > */}
             {/* <div> */}
 
             <Draggable
@@ -158,7 +167,7 @@ export class CanvasWrapper extends React.Component<
               />
 
             </Draggable>
-          </div>
+          {/* </div> */}
         </ComponentOuter>
       </CanvasContext.Provider >
     )

@@ -5,6 +5,7 @@ export interface ICanvasOuterDefaultProps {
   config: IConfig
   children: any
   ref?: React.Ref<any>
+  style?: any
 }
 
 export const CanvasOuterDefault = styled.div<ICanvasOuterDefaultProps>`
