@@ -9,7 +9,7 @@ export interface IChart {
     [id: string]: ILink,
   }
   properties?: any
-
+  zoom: IZoom
   /** System Temp */
   selected: ISelectedOrHovered
   hovered: ISelectedOrHovered
@@ -55,4 +55,31 @@ export interface ILink {
     position?: IPosition,
   }
   properties?: any
+}
+
+export interface IZoom {
+  width: number
+  height: number
+  scale: number
+  transformEnabled?: boolean
+  minScale?: number
+  maxScale?: number
+  pan?: {
+    disabled?: boolean
+    touchPadEnabled?: boolean,
+  }
+  wheel?: {
+    disabled?: boolean
+    step?: number
+    wheelEnabled?: boolean
+    touchPadEnabled?: boolean,
+  }
+  zoomIn?: {
+    disabled?: boolean
+    step?: number,
+  }
+  zoomOut?: {
+    disabled?: boolean
+    step?: number,
+  }
 }

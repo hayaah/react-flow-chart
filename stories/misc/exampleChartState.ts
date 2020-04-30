@@ -5,6 +5,30 @@ export const chartSimple: IChart = {
     x: 0,
     y: 0,
   },
+  zoom: {
+    width: 150,
+    height: 150,
+    scale: 0.68,
+    transformEnabled: true,
+    minScale: 0.25,
+    maxScale: 2,
+    pan: {
+      disabled: false,
+      touchPadEnabled: true,
+    },
+    wheel: {
+      disabled: false,
+      step: 75,
+      wheelEnabled: true,
+      touchPadEnabled: true,
+    },
+    zoomIn: {
+      step: 300,
+    },
+    zoomOut: {
+      step: 300,
+    },
+  },
   nodes: {
     node1: {
       id: 'node1',
