@@ -1,16 +1,6 @@
 import * as React from 'react'
 import Draggable from 'react-draggable'
-import {
-  IConfig,
-  IOnCanvasClick,
-  IOnCanvasDrop,
-  IOnDeleteKey,
-  IOnDragCanvas,
-  IOnDragCanvasStop,
-  IOnZoomCanvas,
-  IZoom,
-  REACT_FLOW_CHART,
-} from '../../'
+import { IConfig, IOnCanvasClick, IOnCanvasDrop, IOnDeleteKey, IOnDragCanvas, IOnDragCanvasStop, IZoom, REACT_FLOW_CHART } from '../../'
 import CanvasContext from './CanvasContext'
 import { ICanvasInnerDefaultProps } from './CanvasInner.default'
 import { ICanvasOuterDefaultProps } from './CanvasOuter.default'
@@ -19,10 +9,9 @@ export interface ICanvasWrapperProps {
   config: IConfig
   position: {
     x: number
-    y: number
+    y: number,
   }
   zoom: IZoom
-  onZoomCanvas: IOnZoomCanvas
   onDragCanvas: IOnDragCanvas
   onDragCanvasStop: IOnDragCanvasStop
   onDeleteKey: IOnDeleteKey
@@ -87,7 +76,7 @@ export class CanvasWrapper extends React.Component<
     this.props.onDragCanvas({ config, event, data })
   }
 
-  public render() {
+  public render () {
     const {
       config,
       ComponentInner,
@@ -119,55 +108,43 @@ export class CanvasWrapper extends React.Component<
             transformOrigin: `left top`
           }}
         >
+          <Draggable
+            axis="both"
+            position={position}
+            grid={[1, 1]}
+            onDrag={(event, data) => this.onDragCanvas({ config, event, data })}
+            onStop={(event, data) => this.onDragCanvasStop({ config, event, data })}
+            disabled={config.readonly}
+          >
+            <ComponentInner
+              config={config}
+              children={children}
+              onClick={onCanvasClick}
+              tabIndex={0}
+              onKeyDown={(e: React.KeyboardEvent) => {
+                // delete or backspace keys
+                if (e.keyCode === 46 || e.keyCode === 8) {
+                  onDeleteKey({ config })
+                }
+              }}
+              onDrop={(e) => {
+                const data = JSON.parse(
+                  e.dataTransfer.getData(REACT_FLOW_CHART)
+                )
+                if (data) {
+                  onCanvasDrop({
+                    data,
+                    position: {
+                      x: e.clientX - (position.x + offsetX),
+                      y: e.clientY - (position.y + offsetY),
+                    },
+                  })
+                }
+              }}
+              onDragOver={(e) => e.preventDefault()}
+            />
 
-          {/* <div
-            style={{
-              width: `${zoom.width}%`,
-              height: `${zoom.height}%`,
-              transform: `scale(${zoom.scale})`,
-              transformOrigin: `left top`
-            }}
-          > */}
-            {/* <div> */}
-
-            <Draggable
-              axis="both"
-              position={position}
-              grid={[1, 1]}
-              onDrag={(event, data) => this.onDragCanvas({ config, event, data })}
-              onStop={(event, data) => this.onDragCanvasStop({ config, event, data })}
-              disabled={config.readonly}
-            >
-              <ComponentInner
-                config={config}
-                children={children}
-                onClick={onCanvasClick}
-                tabIndex={0}
-                onKeyDown={(e: React.KeyboardEvent) => {
-                  // delete or backspace keys
-                  if (e.keyCode === 46 || e.keyCode === 8) {
-                    onDeleteKey({ config })
-                  }
-                }}
-                onDrop={(e) => {
-                  const data = JSON.parse(
-                    e.dataTransfer.getData(REACT_FLOW_CHART)
-                  )
-                  if (data) {
-                    onCanvasDrop({
-                      data,
-                      position: {
-                        x: e.clientX - (position.x + offsetX),
-                        y: e.clientY - (position.y + offsetY),
-                      },
-                    })
-                  }
-                }}
-                onDragOver={(e) => e.preventDefault()}
-              />
-
-            </Draggable>
-          {/* </div> */}
+          </Draggable>
         </ComponentOuter>
       </CanvasContext.Provider >
     )
@@ -179,10 +156,7 @@ export class CanvasWrapper extends React.Component<
     if (el) {
       const rect = el.getBoundingClientRect()
 
-      if (
-        el.offsetWidth !== this.state.width ||
-        el.offsetHeight !== this.state.height
-      ) {
+      if (el.offsetWidth !== this.state.width || el.offsetHeight !== this.state.height) {
         this.setState({ width: el.offsetWidth, height: el.offsetHeight })
         this.props.onSizeChange(el.offsetWidth, el.offsetHeight)
       }

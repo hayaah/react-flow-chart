@@ -34,7 +34,7 @@ export class Zoom extends React.Component {
   public render() {
     const chart = this.state
     const stateActions = mapValues(actions, (func: any) => (...args: any) =>
-      this.setState(func(...args))
+      this.setState(func(...args)),
     ) as typeof actions
 
     return (
@@ -78,8 +78,8 @@ export class Zoom extends React.Component {
                     width: width + width * 0.2,
                     height: height + height * 0.2,
                     scale: scale - newTransform,
-                  }
-                });
+                  },
+                })
               }
             }}
           >

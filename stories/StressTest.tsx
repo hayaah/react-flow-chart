@@ -8,7 +8,7 @@ const getChart = (rows: number, cols: number) => {
   const xyGrid = flatten(
     range(0, cols * 300, 300).map((x) =>
       range(0, rows * 150, 150).map((y) => ({ x, y }))
-    )
+    ),
   )
 
   return {
@@ -45,7 +45,7 @@ const getChart = (rows: number, cols: number) => {
           },
         },
       })),
-      'id'
+      'id',
     ),
     links: keyBy(
       compact(
@@ -78,9 +78,9 @@ const getChart = (rows: number, cols: number) => {
             ]
           }
           return undefined
-        })
+        }),
       ),
-      'id'
+      'id',
     ) as any,
     selected: {},
     hovered: {},

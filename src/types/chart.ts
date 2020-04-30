@@ -3,21 +3,20 @@ import { IPosition, ISize } from './generics'
 export interface IChart {
   offset: IPosition
   nodes: {
-    [id: string]: INode
+    [id: string]: INode,
   }
   links: {
-    [id: string]: ILink
+    [id: string]: ILink,
   }
-  zoom: IZoom
   properties?: any
-
+  zoom: IZoom
   /** System Temp */
   selected: ISelectedOrHovered
   hovered: ISelectedOrHovered
 }
 
 export interface ISelectedOrHovered {
-  type?: 'link' | 'node' | 'port'
+  type?: 'link' | 'node' | 'port',
   id?: string
 }
 
@@ -27,7 +26,7 @@ export interface INode {
   position: IPosition
   orientation?: number
   ports: {
-    [id: string]: IPort
+    [id: string]: IPort,
   }
   properties?: any
   /** System Temp */
@@ -47,13 +46,13 @@ export interface ILink {
   id: string
   from: {
     nodeId: string
-    portId: string
+    portId: string,
   }
   to: {
     nodeId?: string
     portId?: string
     /** System Temp */
-    position?: IPosition
+    position?: IPosition,
   }
   properties?: any
 }
@@ -67,20 +66,20 @@ export interface IZoom {
   maxScale?: number
   pan?: {
     disabled?: boolean
-    touchPadEnabled?: boolean
+    touchPadEnabled?: boolean,
   }
   wheel?: {
     disabled?: boolean
     step?: number
     wheelEnabled?: boolean
-    touchPadEnabled?: boolean
+    touchPadEnabled?: boolean,
   }
   zoomIn?: {
     disabled?: boolean
-    step?: number
+    step?: number,
   }
   zoomOut?: {
     disabled?: boolean
-    step?: number
+    step?: number,
   }
 }
