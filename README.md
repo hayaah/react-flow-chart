@@ -15,10 +15,7 @@
 - [ ] Redux state container
 - [ ] Arrow heads on links
 - [ ] Docs
-
-### [Storybook Demo](https://mrblenny.github.io/react-flow-chart/index.html?selectedKind=With%20Sidebar&selectedStory=default&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook-addon-viewport%2Faddon-panel)
-
-### [CodeSandbox Demo](https://codesandbox.io/s/4w46wv71o7)
+- [X] zoom out and in buttons
 
 This project aims to build a highly customisable, declarative flow chart library. Critically, you control the state. Pick from Redux, MobX, React or any other state managment library - simply pass in the current state and hook up the callbacks.
 
@@ -38,6 +35,30 @@ export const chart: IChart = {
   offset: {
     x: 0,
     y: 0,
+  },
+  zoom: {
+    width: 150,
+    height: 150,
+    scale: 0.68,
+    transformEnabled: true,
+    minScale: 0.25,
+    maxScale: 2,
+    pan: {
+      disabled: false,
+      touchPadEnabled: true,
+    },
+    wheel: {
+      disabled: false,
+      step: 75,
+      wheelEnabled: true,
+      touchPadEnabled: true,
+    },
+    zoomIn: {
+      step: 300,
+    },
+    zoomOut: {
+      step: 300,
+    },
   },
   nodes: {
     node1: {
@@ -122,6 +143,30 @@ const chartSimple = {
     x: 0,
     y: 0
   },
+  zoom: {
+    width: 150,
+    height: 150,
+    scale: 0.68,
+    transformEnabled: true,
+    minScale: 0.25,
+    maxScale: 2,
+    pan: {
+      disabled: false,
+      touchPadEnabled: true,
+    },
+    wheel: {
+      disabled: false,
+      step: 75,
+      wheelEnabled: true,
+      touchPadEnabled: true,
+    },
+    zoomIn: {
+      step: 300,
+    },
+    zoomOut: {
+      step: 300,
+    },
+  },
   nodes: {
     node1: {
       id: "node1",
@@ -199,13 +244,6 @@ const Example = (
 
 ### Other Demos
 [stories/ExternalReactState.tsx](./stories)
-
-
-## Contributing
-
-If you're interested in helping out, let me know. 
-
-In particular, would be great to get a hand with docs and redux / mobx integrations.
 
 
 ## Development
